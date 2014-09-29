@@ -19,7 +19,11 @@ class Microsite(models.Model):
 
 
 def update_microsite_configuration():
-    microsites = {}
+    microsites = {
+        "default": {
+            "course_about_show_social_links": False,
+        }
+    }
     for m in Microsite.objects.all():
         # prepare MICROSITE_CONFIGURATION
         microsites[m.domain_prefix] = {
@@ -27,6 +31,8 @@ def update_microsite_configuration():
             'university': m.site_title,
             'SITE_NAME': '{}.intersystems.com'.format(m.domain_prefix),
             'logo_image_url': '{}/images/{}'.format(m.domain_prefix, os.path.basename(m.logo.name)),
+            'course_org_filter': m.domain_prefix,
+            'course_about_show_social_links': False,
         }
 
         # put logo in place
