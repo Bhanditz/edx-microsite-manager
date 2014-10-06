@@ -37,7 +37,7 @@ def update_microsite_configuration():
         # put logo in place
         microsite_dir = os.path.join(settings.MICROSITE_ROOT_DIR, m.domain_prefix)
         copy_image(m.logo, os.path.join(microsite_dir, 'images'))
-        static_dir = os.path.join(settings.STATIC_ROOT, m.domain_prefix)
+        static_dir = os.path.join(os.path.dirname(settings.STATIC_ROOT), m.domain_prefix)
         copy_image(m.logo, os.path.join(static_dir, 'images'))
 
     f = open('/edx/var/edxapp/microsites.json', 'w')
