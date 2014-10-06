@@ -50,5 +50,7 @@ def copy_image(image, dst_path):
         os.makedirs(dst_path)
     image_path = os.path.join(dst_path, os.path.basename(image.name))
     f = open(image_path, 'wb')
+    image.open()
     f.write(image.read())
     f.close()
+    image.close()
