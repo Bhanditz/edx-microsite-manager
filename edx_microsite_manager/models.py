@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 import json
 import os
-import shutil
 
 
 class Microsite(models.Model):
@@ -40,7 +39,10 @@ def update_microsite_configuration():
         images_dir = os.path.join(microsite_dir, 'images')
         if not os.path.exists(images_dir):
             os.makedirs(images_dir)
-        shutil.copy(m.logo.path, images_dir)
+        image_path = os.path.join(images_dir, os.path.basename(m.logo.name))
+        f = open(image_path, 'wb')
+        f.write(m.logo.read())
+        f.close()
 
     f = open('/edx/var/edxapp/microsites.json', 'w')
     f.write(json.dumps(microsites, indent=4))
