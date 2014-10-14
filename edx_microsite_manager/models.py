@@ -1,7 +1,5 @@
-from django.conf import settings
 from django.db import models
 import json
-import os
 
 
 class Microsite(models.Model):
@@ -29,28 +27,11 @@ def update_microsite_configuration():
             'domain_prefix': m.domain_prefix,
             'university': m.site_title,
             'SITE_NAME': '{}.intersystems.com'.format(m.domain_prefix),
-            'logo_image_url': '{}/images/{}'.format(m.domain_prefix, os.path.basename(m.logo.name)),
+            'logo_image_url': m.logo.url,
             'course_org_filter': m.domain_prefix,
             'course_about_show_social_links': False,
         }
 
-        # put logo in place
-        microsite_dir = os.path.join(settings.MICROSITE_ROOT_DIR, m.domain_prefix)
-        copy_image(m.logo, os.path.join(microsite_dir, 'images'))
-        static_dir = os.path.join(os.path.dirname(settings.STATIC_ROOT), m.domain_prefix)
-        copy_image(m.logo, os.path.join(static_dir, 'images'))
-
     f = open('/edx/var/edxapp/microsites.json', 'w')
     f.write(json.dumps(microsites, indent=4))
     f.close()
-
-
-def copy_image(image, dst_path):
-    if not os.path.exists(dst_path):
-        os.makedirs(dst_path)
-    image_path = os.path.join(dst_path, os.path.basename(image.name))
-    f = open(image_path, 'wb')
-    image.open()
-    f.write(image.read())
-    f.close()
-    image.close()
