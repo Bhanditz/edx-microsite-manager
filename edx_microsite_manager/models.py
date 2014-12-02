@@ -32,7 +32,7 @@ def update_microsite_configuration():
         microsites[m.domain_prefix] = {
             'domain_prefix': m.domain_prefix,
             'university': m.site_title,
-            'SITE_NAME': '{}.intersystems.com'.format(m.domain_prefix),
+            'SITE_NAME': '{}.learning.intersystems.com'.format(m.domain_prefix),
             'logo_image_url': logo_url,
             'course_org_filter': m.domain_prefix,
             'course_about_show_social_links': False,
