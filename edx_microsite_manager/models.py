@@ -1,5 +1,7 @@
 from django.db import models
+from urlparse import urlparse
 import json
+
 
 
 class Microsite(models.Model):
@@ -22,12 +24,16 @@ def update_microsite_configuration():
         }
     }
     for m in Microsite.objects.all():
+        #remove query string from logo url
+        p_url = urlparse(m.logo.url)
+        logo_url = ''.join([p_url.scheme,'://',p_url.netloc,p_url.path])
+
         # prepare MICROSITE_CONFIGURATION
         microsites[m.domain_prefix] = {
             'domain_prefix': m.domain_prefix,
             'university': m.site_title,
             'SITE_NAME': '{}.intersystems.com'.format(m.domain_prefix),
-            'logo_image_url': m.logo.url,
+            'logo_image_url': logo_url,
             'course_org_filter': m.domain_prefix,
             'course_about_show_social_links': False,
         }
